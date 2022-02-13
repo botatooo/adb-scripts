@@ -20,7 +20,7 @@ Function Test-CommandExists {
 }
 
 ForEach ($adbPath in $commonAdbLocations) {
-  if (Test-Path -Path $adb) {
+  if (Test-Path -Path $adbPath) {
     $adb = $adbPath
     break
   }
@@ -31,6 +31,7 @@ if (!Get-Variable -Name adb -ErrorAction SilentlyContinue) {
   $adb_download_url = "https://dl.google.com/android/repository/platform-tools-latest-windows.zip"
   Invoke-WebRequest -Uri $adb_download_url -OutFile "$Env:TEMP\platform-tools.zip"
   Expand-Archive -LiteralPath "$Env:TEMP\platform-tools.zip" -DestinationPath "C:"
+  Remove-Item -Path "$Env:TEMP\platform-tools.zip"
   $adb = "C:\platform-tools\adb.exe"
 }
 
