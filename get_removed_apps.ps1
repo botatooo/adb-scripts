@@ -13,8 +13,3 @@ $RemovedPackages = Compare-Object @Params -PassThru
 $RemovedPackages = $RemovedPackages -replace 'package:',''
 # Sort it
 $RemovedPackages = $RemovedPackages | Sort-Object
-
-if ($args -notcontains '-NoVerbose') {
-  # Print it into the console (with a new line seperating them)
-  Write-Host ($RemovedPackages -join [Environment]::NewLine) -ForegroundColor Red
-}
