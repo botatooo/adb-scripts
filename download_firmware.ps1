@@ -32,6 +32,6 @@ Write-Host "Firmware decrypted" -ForegroundColor Green
 
 Write-Host "Unzipping firmware" -ForegroundColor Green
 $dir = New-Item -Path ($zip -replace ".zip") -ItemType Directory
-.\bin\7z.exe x $zip -o"$dir"
+Expand-Archive -Path $zip -DestinationPath $dir
 
 Write-Host "----`nDone" -ForegroundColor Green
