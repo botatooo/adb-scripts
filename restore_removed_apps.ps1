@@ -19,5 +19,5 @@ $RemovedPackages = $RemovedPackages | Sort-Object
 Write-Host "Reinstalling apps..." -ForegroundColor Green
 
 ForEach ($Package in $RemovedPackages) {
-  & $adb shell pm install-existing --full --user all $Package
+  & $adb shell pm install-existing --full --user 0 $Package
 }
