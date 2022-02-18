@@ -16,7 +16,7 @@ $RemovedPackages = $RemovedPackages | Sort-Object
 
 ## Next step: use package IDs to get the app names
 # Add aapt
-Import-Module -Name "./modules/add_aapt.psm1"
+Import-Module -Name "./modules/get_aapt.psm1"
 
 Write-Host "Uninstalled apps:" -ForegroundColor Red
 ForEach ($PackageID in $RemovedPackages) {
