@@ -3,10 +3,10 @@ Import-Module -Name .\modules\get_adb.ps1
 Write-Host "Removed files: " -ForegroundColor Green
 
 $Params = @{
-  # Only the packages that are installed
-  ReferenceObject = (& $adb shell pm list packages)
-  # All the packages including the ones that are uninstalled
-  DifferenceObject = (& $adb shell pm list packages -u)
+    # Only the packages that are installed
+    ReferenceObject = (& $adb shell pm list packages)
+    # All the packages including the ones that are uninstalled
+    DifferenceObject = (& $adb shell pm list packages -u)
 }
 
 # Get the uninstalled packages
@@ -20,5 +20,6 @@ Write-Host "Reinstalling apps..." -ForegroundColor Green
 
 ForEach ($Package in $RemovedPackages)
 {
-  & $adb shell pm install-existing --full --user 0 $Package
+    & $adb shell pm install-existing --full --user 0 $Package | Out-Null
+    Write-Host "Reinstalled $Package"
 }
