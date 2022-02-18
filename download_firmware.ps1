@@ -38,4 +38,4 @@ Write-Host "Unzipping firmware" -ForegroundColor Green
 $dir = New-Item -Path ($zip -replace ".zip") -ItemType Directory
 Expand-Archive -Path $zip -DestinationPath $dir
 
-Write-Host "----`nDone" -ForegroundColor Green
+Write-Host "---- Done" -ForegroundColor Green     
