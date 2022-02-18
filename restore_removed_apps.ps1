@@ -1,4 +1,6 @@
-Import-Module -Name .\modules\get_adb.ps1
+Import-Module -Name ./modules/get_adb.ps1
+Import-Module -Name ./modules/get_app_name.psm1
+
 
 Write-Host "Removed files: " -ForegroundColor Green
 
@@ -21,5 +23,6 @@ Write-Host "Reinstalling apps..." -ForegroundColor Green
 ForEach ($Package in $RemovedPackages)
 {
     & $adb shell pm install-existing --full --user 0 $Package | Out-Null
-    Write-Host "Reinstalled $Package"
+    $AppName = Get-AppName -PackageID $Package
+    Write-Host "Reinstalled $AppName ($Package)" -ForegroundColor Green
 }
