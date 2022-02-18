@@ -1,4 +1,4 @@
-Get-Content -Path .\modules\get_adb.ps1 | Invoke-Expression
+Import-Module -Name .\modules\get_adb.ps1
 
 Write-Host "Removed files: " -ForegroundColor Green
 
@@ -18,6 +18,7 @@ $RemovedPackages = $RemovedPackages | Sort-Object
 
 Write-Host "Reinstalling apps..." -ForegroundColor Green
 
-ForEach ($Package in $RemovedPackages) {
+ForEach ($Package in $RemovedPackages)
+{
   & $adb shell pm install-existing --full --user 0 $Package
 }

@@ -20,12 +20,16 @@ Write-Host "Firmware downloaded" -ForegroundColor Green
 Write-Host "Decrypting firmware" -ForegroundColor Green
 $out = Get-Item -Path $out
 $files = Get-ChildItem -Path $out -File -Filter *.zip.enc*
-if ($files.Count -cge 1) {
+if ($files.Count -cge 1)
+{
   $file = $files[0]
-} else {
+}
+else
+{
   Write-Host "No firmware found" -ForegroundColor Red
   exit 1
 }
+
 $zip = ($file.FullName -replace ".enc4" -replace ".enc2")
 samloader -m $model -r $region decrypt -v "$version" -i $file -o $zip
 Write-Host "Firmware decrypted" -ForegroundColor Green

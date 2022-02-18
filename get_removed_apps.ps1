@@ -19,7 +19,8 @@ $RemovedPackages = $RemovedPackages | Sort-Object
 Import-Module -Name "./modules/get_aapt.psm1"
 
 Write-Host "Uninstalled apps:" -ForegroundColor Red
-ForEach ($PackageID in $RemovedPackages) {
+ForEach ($PackageID in $RemovedPackages)
+{
   # Default output
   $path = (adb shell pm list packages -u -f "$PackageID") | Select-Object -First 1
   # Cleaning it a bit
