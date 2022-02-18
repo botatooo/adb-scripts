@@ -19,6 +19,14 @@ Function Test-CommandExists {
   }
 }
 
+Function New-AndroidDebugBridge {
+  $platform_tools = "https://dl.google.com/android/repository/platform-tools-latest-windows.zip"
+  Invoke-WebRequest -Uri $platform_tools -OutFile "$Env:TEMP\platform-tools.zip"
+  Expand-Archive -LiteralPath "$Env:TEMP\platform-tools.zip" -DestinationPath "C:"
+  Remove-Item -Path "$Env:TEMP\platform-tools.zip"
+  Return "C:\platform-tools\adb.exe"
+}
+
 # try to find adb in the common locations
 ForEach ($adbPath in $commonAdbLocations) {
   if (Test-Path -Path $adbPath) {
@@ -29,11 +37,7 @@ ForEach ($adbPath in $commonAdbLocations) {
 
 if (!(Get-Variable -Name adb -ErrorAction SilentlyContinue)) {
   Write-Host "adb not found, downloading..."
-  $platform_tools = "https://dl.google.com/android/repository/platform-tools-latest-windows.zip"
-  Invoke-WebRequest -Uri $platform_tools -OutFile "$Env:TEMP\platform-tools.zip"
-  Expand-Archive -LiteralPath "$Env:TEMP\platform-tools.zip" -DestinationPath "C:"
-  Remove-Item -Path "$Env:TEMP\platform-tools.zip"
-  $adb = "C:\platform-tools\adb.exe"
+  $adb = New-AndroidDebugBridge
   $env:Path = "$adb;" + $env:Path
 }
 
