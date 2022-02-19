@@ -1,12 +1,65 @@
 $model = Read-Host -Prompt "Enter the model of the device: "
-$region = Read-Host -Prompt "Enter the region of the device: "
+$region = Read-Host -Prompt "Enter the region of the device (CSC Code): "
 $out = Get-Item -Path .\firmware\
 
-if (samloader --help | Out-Null) {
-    Write-Host "samloader is installing" -ForegroundColor Red
-    python -m pip install git+https://github.com/nlscc/samloader.git
-} else {
+Function Test-CommandExists
+{
+    Param ([string] $Command)
+    $oldPreference = $ErrorActionPreference
+    $ErrorActionPreference = "stop"
+    try
+    {
+        If (Get-Command $Command)
+        {
+            Return $true
+        }
+    }
+    Catch
+    {
+        Return $false
+    }
+    Finally
+    {
+        $ErrorActionPreference = $oldPreference
+    }
+}
+
+If (Test-CommandExists samloader)
+{
     Write-Host "samloader found" -ForegroundColor Green
+}
+Else
+{
+  Write-Host "samloader is installing" -ForegroundColor Red
+  Try
+  {
+    python -m pip install git+https://github.com/nlscc/samloader.git
+  }
+  Catch
+  {
+    Write-Host "Python or PIP missing from PATH" -ForegroundColor Red
+  }
+}
+
+Function CheckFor-Model
+{
+  Param([PSObject] $item)
+  If ($item[0] -contains $model)
+  {
+    return $item
+  }
+  Else
+  {
+    If ($null -ne $item[1])
+    {
+      $item.Remove($item[0])
+      return CheckFor-Model $item
+    }
+    Else
+    {
+      return $false
+    }
+  }
 }
 
 $version = samloader -m $model -r $region checkupdate
@@ -20,14 +73,17 @@ Write-Host "Firmware downloaded" -ForegroundColor Green
 Write-Host "Decrypting firmware" -ForegroundColor Green
 $out = Get-Item -Path $out
 $files = Get-ChildItem -Path $out -File -Filter *.zip.enc*
-if ($files.Count -cge 1)
+If ($files.Count -lt 1)
 {
-    $file = $files[0]
+  Write-Host "No firmware found" -ForegroundColor Red
+  exit 1
 }
-else
+Else
 {
-    Write-Host "No firmware found" -ForegroundColor Red
-    exit 1
+  $file = $files | Sort-Object -Property Name
+  If (($files | Select-Object -First 1) -notcontains "$model") {
+
+  }
 }
 
 $zip = ($file.FullName -replace ".enc4" -replace ".enc2")
