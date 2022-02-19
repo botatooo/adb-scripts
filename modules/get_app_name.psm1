@@ -1,5 +1,5 @@
-Import-Module -Name ./get_adb.psm1
-Import-Module -Name ./get_aapt.psm1
+Import-Module -Name .\get_adb.psm1
+Import-Module -Name .\get_aapt.psm1
 
 Function Get-AppName
 {

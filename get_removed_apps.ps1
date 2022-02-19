@@ -1,6 +1,6 @@
-Import-Module -Name ./modules/get_adb.psm1
-Import-Module -Name ./modules/get_aapt.psm1
-Import-Module -Name ./modules/get_app_name.psm1
+Import-Module -Name .\modules\get_adb.psm1
+Import-Module -Name .\modules\get_aapt.psm1
+Import-Module -Name .\modules\get_app_name.psm1
 
 $Params = @{
     # Only the packages that are installed

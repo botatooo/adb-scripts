@@ -1,5 +1,5 @@
-Import-Module -Name ./modules/get_adb.ps1
-Import-Module -Name ./modules/get_app_name.psm1
+Import-Module -Name .\modules\get_adb.ps1
+Import-Module -Name .\modules\get_app_name.psm1
 
 
 Write-Host "Removed files: " -ForegroundColor Green
