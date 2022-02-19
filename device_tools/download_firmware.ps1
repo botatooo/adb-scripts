@@ -1,6 +1,15 @@
 $model = Read-Host -Prompt "Enter the model of the device: "
 $region = Read-Host -Prompt "Enter the region of the device (CSC Code): "
-$out = Get-Item -Path .\firmware\
+
+Try
+{
+    $out = Get-Item -Path .\firmware\
+}
+Catch
+{
+    New-Item -Path .\firmware\ -ItemType Directory
+    $out = Get-Item -Path .\firmware\
+}
 
 Function Test-CommandExists
 {
