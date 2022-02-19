@@ -24,6 +24,27 @@ Function Test-CommandExists
     }
 }
 
+Function Find-Model
+{
+  Param([PSObject] $item)
+  If ($item[0] -contains $model)
+  {
+    return $item
+  }
+  Else
+  {
+    If ($null -ne $item[1])
+    {
+      $item.Remove($item[0])
+      return Find-Model $item
+    }
+    Else
+    {
+      return $false
+    }
+  }
+}
+
 If (Test-CommandExists samloader)
 {
     Write-Host "samloader found" -ForegroundColor Green
@@ -38,27 +59,6 @@ Else
   Catch
   {
     Write-Host "Python or PIP missing from PATH" -ForegroundColor Red
-  }
-}
-
-Function CheckFor-Model
-{
-  Param([PSObject] $item)
-  If ($item[0] -contains $model)
-  {
-    return $item
-  }
-  Else
-  {
-    If ($null -ne $item[1])
-    {
-      $item.Remove($item[0])
-      return CheckFor-Model $item
-    }
-    Else
-    {
-      return $false
-    }
   }
 }
 
