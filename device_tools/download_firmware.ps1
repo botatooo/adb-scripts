@@ -11,28 +11,6 @@ Catch
     $out = Get-Item -Path .\firmware\
 }
 
-Function Test-CommandExists
-{
-    Param ([string] $Command)
-    $oldPreference = $ErrorActionPreference
-    $ErrorActionPreference = "stop"
-    try
-    {
-        If (Get-Command $Command)
-        {
-            Return $true
-        }
-    }
-    Catch
-    {
-        Return $false
-    }
-    Finally
-    {
-        $ErrorActionPreference = $oldPreference
-    }
-}
-
 Function Find-Model
 {
   Param([PSObject] $item)
@@ -54,7 +32,7 @@ Function Find-Model
   }
 }
 
-If (Test-CommandExists samloader)
+If (Get-Command -Name samloader -ErrorAction Ignore)
 {
     Write-Host "samloader found" -ForegroundColor Green
 }
