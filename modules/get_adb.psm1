@@ -22,7 +22,7 @@ ForEach ($adbPath in $commonAdbLocations)
     }
 }
 
-If (!(Get-Variable -Name adb -ErrorAction SilentlyContinue))
+If (-not (Get-Variable -Name adb -ErrorAction SilentlyContinue))
 {
     Write-Host "adb not found, downloading..."
     $adb = New-AndroidDebugBridge
