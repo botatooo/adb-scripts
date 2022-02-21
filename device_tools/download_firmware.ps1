@@ -69,7 +69,7 @@ Else
 {
   $file = $files | Sort-Object -Property Name
   If (($files | Select-Object -First 1) -notcontains "$model") {
-
+    Find-Model $files
   }
 }
 
