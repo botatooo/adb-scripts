@@ -1,5 +1,6 @@
 $model = Read-Host -Prompt "Enter the model of the device: "
 $region = Read-Host -Prompt "Enter the region of the device (CSC Code): "
+$samloader_pip = "git+https://github.com/nlscc/samloader.git"
 
 Try
 {
@@ -41,11 +42,13 @@ Else
   Write-Host "samloader is installing" -ForegroundColor Red
   Try
   {
-    python -m pip install git+https://github.com/nlscc/samloader.git
+    python -m pip install $samloader_pip
   }
   Catch
   {
     Write-Host "Python or PIP missing from PATH" -ForegroundColor Red
+    $python = Read-Host -Prompt "Direct path to python.exe: "
+    & $python -m pip install $samloader_pip
   }
 }
 
