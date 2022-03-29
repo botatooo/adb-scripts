@@ -1,5 +1,4 @@
 Get-Content -Raw .\modules\check_adb.ps1 | Invoke-Expression
-Get-Content -Raw .\modules\get_aapt.ps1 | Invoke-Expression
 Get-Content -Raw .\modules\get_app_name.ps1 | Invoke-Expression
 
 $CompareObjects = @{
