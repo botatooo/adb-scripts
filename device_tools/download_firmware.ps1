@@ -1,20 +1,21 @@
-$model = Read-Host -Prompt "Enter the model of the device: "
-$region = Read-Host -Prompt "Enter the region of the device (CSC Code): "
+$model = Read-Host -Prompt "Enter the model of the device"
+$region = Read-Host -Prompt "Enter the region of the device (CSC Code)"
 $samloader_pip = "git+https://github.com/nlscc/samloader.git"
 
-Try
-{
-    $out = Get-Item -Path .\firmware\
-}
-Catch
+If (-not (Test-Path -Path .\firmware\ -PathType Container))
 {
     New-Item -Path .\firmware\ -ItemType Directory
-    $out = Get-Item -Path .\firmware\
 }
+
+$out = Get-Item -Path .\firmware\
 
 Function Find-Model
 {
-  Param([PSObject] $item)
+  Param (
+    [Parameter(Mandatory=$true, Position=0)]
+    [PSObject]
+    $item
+  )
   If ($item[0] -contains $model)
   {
     return $item
@@ -48,7 +49,14 @@ Else
   {
     Write-Host "Python or PIP missing from PATH" -ForegroundColor Red
     $python = Read-Host -Prompt "Direct path to python.exe: "
-    & $python -m pip install $samloader_pip
+    If (-not (Test-Path -Path $python))
+    {
+      & $python -m pip install $samloader_pip
+    }
+    Else
+    {
+      Throw "Invalid path: `"$python`""
+    }
   }
 }
 

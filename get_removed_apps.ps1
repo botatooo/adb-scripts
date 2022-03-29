@@ -1,19 +1,19 @@
-Import-Module -Name .\modules\get_adb.psm1
-Import-Module -Name .\modules\get_aapt.psm1
-Import-Module -Name .\modules\get_app_name.psm1
+Get-Content -Raw .\modules\check_adb.ps1 | Invoke-Expression
+Get-Content -Raw .\modules\get_aapt.ps1 | Invoke-Expression
+Get-Content -Raw .\modules\get_app_name.ps1 | Invoke-Expression
 
-$Params = @{
+$CompareObjects = @{
     # Only the packages that are installed
-    ReferenceObject = (& $adb shell pm list packages)
+    ReferenceObject = (adb shell pm list packages)
     # All the packages including the ones that are uninstalled
-    DifferenceObject = (& $adb shell pm list packages -u)
+    DifferenceObject = (adb shell pm list packages -u)
 }
 
 # Get the uninstalled packages
-$RemovedPackages = Compare-Object @Params -PassThru
+$RemovedPackages = Compare-Object @CompareObjects -PassThru
 # Clean it up
 $RemovedPackages = $RemovedPackages -replace "package:",""
-# Sort it
+# Sort them
 $RemovedPackages = $RemovedPackages | Sort-Object
 
 ## Next step: use package IDs to get the app names

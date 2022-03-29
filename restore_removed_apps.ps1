@@ -1,14 +1,12 @@
-Import-Module -Name .\modules\get_adb.ps1
-Import-Module -Name .\modules\get_app_name.psm1
-
+Get-Content -Raw .\modules\get_app_name.ps1 | Invoke-Expression
 
 Write-Host "Removed files: " -ForegroundColor Green
 
 $Params = @{
     # Only the packages that are installed
-    ReferenceObject = (& $adb shell pm list packages)
+    ReferenceObject = (adb shell pm list packages)
     # All the packages including the ones that are uninstalled
-    DifferenceObject = (& $adb shell pm list packages -u)
+    DifferenceObject = (adb shell pm list packages -u)
 }
 
 # Get the uninstalled packages
@@ -22,7 +20,7 @@ Write-Host "Reinstalling apps..." -ForegroundColor Green
 
 ForEach ($Package in $RemovedPackages)
 {
-    & $adb shell pm install-existing --full --user 0 $Package | Out-Null
+    adb shell pm install-existing --full --user 0 $Package | Out-Null
     $AppName = Get-AppName -PackageID $Package
     Write-Host "Reinstalled $AppName ($Package)" -ForegroundColor Green
 }
